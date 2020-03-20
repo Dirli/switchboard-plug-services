@@ -42,7 +42,9 @@ namespace Services {
 
             permission.notify["allowed"].connect (() => {
                 info_bar.visible = !permission.allowed;
+                main_view.permission = permission.allowed;
             });
+            main_view.permission = permission.allowed;
 
             return main_grid;
         }

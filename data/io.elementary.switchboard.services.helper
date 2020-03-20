@@ -1,0 +1,23 @@
+#!/bin/bash
+
+while getopts "c:s:" opt; do
+    case ${opt} in
+        c)
+            commands=(enable disable start restart stop)
+            for cmd in "${commands[@]}"; do
+                if [[ $cmd = $OPTARG ]]; then
+                    command=$cmd
+                    break
+                fi
+            done
+
+        ;;
+        s)
+            service=$OPTARG
+        ;;
+    esac
+done
+
+if [[ -n $command && -n $service ]]; then
+    sudo systemctl ${command} ${service}
+fi

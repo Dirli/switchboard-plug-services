@@ -42,6 +42,14 @@ namespace Services.Utils {
         return strcmp (a.collate_key (), b.collate_key ());
     }
 
+    public static void exec_command (string command, string service_name) {
+        try {
+            GLib.Process.spawn_command_line_sync ("/usr/bin/io.elementary.switchboard.services.helper -c %s -s %s".printf (command, service_name), null, null, null);
+        } catch (Error e) {
+            warning (e.message);
+        }
+    }
+
     public static Gee.TreeMap<string, Unit?> get_services () {
         var services = new Gee.TreeMap<string, Unit?> (sort_func);
         string ls_stdout;
