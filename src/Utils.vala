@@ -23,6 +23,18 @@ namespace Services.Utils {
         public string description;
     }
 
+    public static string get_service_status (string service_name) {
+        try {
+            string ls_stdout;
+            GLib.Process.spawn_command_line_sync ("systemctl status %s".printf (service_name), out ls_stdout, null, null);
+            return ls_stdout;
+        } catch (Error e) {
+            warning (e.message);
+        }
+
+        return "";
+    }
+
     public static string get_service_property (string service_name, string service_property) {
         try {
             string ls_stdout;

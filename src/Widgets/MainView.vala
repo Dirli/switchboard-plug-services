@@ -8,6 +8,7 @@ namespace Services {
         private Gtk.Button run_button;
         private Gtk.Button restart_button;
         private Gtk.Button stop_button;
+        private Widgets.ServicesView view;
 
         private string active_service = "";
 
@@ -24,7 +25,7 @@ namespace Services {
 
             list_store = new Gtk.ListStore (4, typeof (string), typeof (string), typeof (string), typeof (string));
 
-            var view = new Widgets.ServicesView ();
+            view = new Widgets.ServicesView ();
             view.set_model (list_store);
             view.row_activated.connect (on_row_activated);
             tree_selection = view.get_selection ();
@@ -191,8 +192,17 @@ namespace Services {
             }
         }
 
-        private void on_row_activated () {
-            warning ("row activated");
+        private void on_row_activated (Gtk.TreePath path, Gtk.TreeViewColumn column) {
+            Gtk.TreeModel model;
+            Gtk.TreeIter iter;
+            if (tree_selection.get_selected (out model, out iter)) {
+                string s_name;
+                model.@get (iter, 0, out s_name, -1);
+
+                var s_status = Utils.get_service_status (s_name);
+
+                new Widgets.ServiceStatus ((Gtk.Window) get_toplevel (), s_name, s_status);
+            }
         }
     }
 }

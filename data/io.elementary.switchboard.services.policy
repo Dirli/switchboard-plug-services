@@ -14,6 +14,6 @@
       <allow_inactive>no</allow_inactive>
       <allow_active>auth_admin_keep</allow_active>
     </defaults>
-    <annotate key="org.freedesktop.policykit.exec.path">@PKGDATADIR@/io.elementary.switchboard.services.helper</annotate>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/io.elementary.switchboard.services.helper</annotate>
   </action>
 </policyconfig>

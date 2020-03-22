@@ -18,6 +18,7 @@ plug_files = files (
     'src/Plug.vala',
     'src/Utils.vala',
     'src/Widgets/MainView.vala',
+    'src/Widgets/ServiceStatus.vala',
     'src/Widgets/ServicesView.vala'
 )
 
