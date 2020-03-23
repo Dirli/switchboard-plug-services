@@ -4,10 +4,12 @@ project (
     version: '0.9.0'
 )
 
+gettext_name = meson.project_name() + '-plug'
 gnome = import ('gnome')
+i18n = import('i18n')
 
 add_global_arguments(
-    '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
+    '-DGETTEXT_PACKAGE="@0@"'.format(gettext_name),
     language:'c'
 )
 
@@ -38,3 +40,4 @@ shared_module (
 )
 
 subdir ('data')
+subdir ('po')

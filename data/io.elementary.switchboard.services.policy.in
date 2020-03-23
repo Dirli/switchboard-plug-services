@@ -7,8 +7,8 @@
   <vendor_url>https://github.com/Dirli/</vendor_url>
 
   <action id="io.elementary.switchboard.services.administration">
-    <description>Manage services</description>
-    <message>Authentication is required to manage services</message>
+    <description gettext-domain="@GETTEXT_PACKAGE@">Manage services</description>
+    <message gettext-domain="@GETTEXT_PACKAGE@">Authentication is required to manage services</message>
     <defaults>
       <allow_any>no</allow_any>
       <allow_inactive>no</allow_inactive>
