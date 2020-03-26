@@ -19,5 +19,5 @@ while getopts "c:s:" opt; do
 done
 
 if [[ -n $command && -n $service ]]; then
-    sudo systemctl ${command} ${service}
+    systemctl ${command} ${service}
 fi

@@ -74,7 +74,7 @@ namespace Services.Utils {
 
     public static void exec_command (string command, string service_name) {
         try {
-            GLib.Process.spawn_command_line_sync ("/usr/bin/io.elementary.switchboard.services.helper -c %s -s %s".printf (command, service_name), null, null, null);
+            GLib.Process.spawn_command_line_sync ("pkexec /usr/bin/io.elementary.switchboard.services.helper -c %s -s %s".printf (command, service_name), null, null, null);
         } catch (Error e) {
             warning (e.message);
         }
