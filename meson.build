@@ -19,6 +19,7 @@ polkit_dep = dependency ('polkit-gobject-1')
 plug_files = files (
     'src/Plug.vala',
     'src/Utils.vala',
+    'src/Widgets/FilterBox.vala',
     'src/Widgets/MainView.vala',
     'src/Widgets/ServiceStatus.vala',
     'src/Widgets/ServicesView.vala',

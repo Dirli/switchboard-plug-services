@@ -26,13 +26,12 @@ namespace Services {
                 resizable: false,
                 title: s_name,
                 transient_for: parent,
-                width_request: 420,
+                width_request: 540,
                 window_position: Gtk.WindowPosition.CENTER_ON_PARENT
             );
 
             var status_label = new Gtk.Label (status);
             status_label.margin = 10;
-
 
             var scrolled = new Gtk.ScrolledWindow (null, null);
             scrolled.add (status_label);

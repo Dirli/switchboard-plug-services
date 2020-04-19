@@ -32,6 +32,9 @@ namespace Services {
         private Gtk.Button stop_button;
         private Widgets.ServicesView view;
 
+        private int filter_column;
+        private string filter_value = "";
+
         private string active_service = "";
 
         public bool permission {
@@ -57,7 +60,6 @@ namespace Services {
             view.row_activated.connect (on_row_activated);
             tree_selection = view.get_selection ();
             tree_selection.changed.connect (selected_item_changed);
-
 
             var scrolled = new Gtk.ScrolledWindow (null, null);
             scrolled.add (view);
@@ -118,6 +120,21 @@ namespace Services {
         }
 
         private bool row_visible (Gtk.TreeModel model, Gtk.TreeIter iter) {
+            if (filter_value == "") {
+                return true;
+            }
+
+            switch (filter_column) {
+                case 0:
+                    string s_name;
+                    list_store.@get (iter, 0, out s_name, -1);
+                    return s_name.index_of (filter_value) >= 0;
+                case 1:
+                    string start_state;
+                    list_store.@get (iter, 1, out start_state, -1);
+                    return start_state == filter_value;
+            }
+
             return true;
         }
 
@@ -168,7 +185,10 @@ namespace Services {
             });
         }
 
-        public void run_filter () {
+        public void run_filter (int col, string val) {
+            filter_value = val;
+            filter_column = col;
+
             list_filter.refilter ();
         }
 
@@ -180,8 +200,11 @@ namespace Services {
             Utils.exec_command (command_name, active_service);
 
             Gtk.TreeModel model;
-            Gtk.TreeIter iter;
-            if (tree_selection.get_selected (out model, out iter)) {
+            Gtk.TreeIter filter_iter;
+            if (tree_selection.get_selected (out model, out filter_iter)) {
+                Gtk.TreeIter iter;
+                list_filter.convert_iter_to_child_iter (out iter, filter_iter);
+
                 var s_active = Utils.get_service_property (active_service, "ActiveState");
                 var sub = Utils.get_service_property (active_service, "SubState");
 
@@ -201,10 +224,12 @@ namespace Services {
 
             Utils.exec_command (service_switcher.active ? "enable" : "disable", active_service);
 
-
             Gtk.TreeModel model;
-            Gtk.TreeIter iter;
-            if (tree_selection.get_selected (out model, out iter)) {
+            Gtk.TreeIter filter_iter;
+            if (tree_selection.get_selected (out model, out filter_iter)) {
+                Gtk.TreeIter iter;
+                list_filter.convert_iter_to_child_iter (out iter, filter_iter);
+
                 var service_state = Utils.get_service_property (active_service, "UnitFileState");
                 list_store.@set (iter, 1, service_state, -1);
             }
@@ -213,11 +238,14 @@ namespace Services {
         private void selected_item_changed () {
             service_switcher.notify["active"].disconnect (change_start_state);
             Gtk.TreeModel model;
-            Gtk.TreeIter iter;
+            Gtk.TreeIter filter_iter;
 
             active_service = "";
 
-            if (tree_selection.get_selected (out model, out iter)) {
+            if (tree_selection.get_selected (out model, out filter_iter)) {
+                Gtk.TreeIter iter;
+                list_filter.convert_iter_to_child_iter (out iter, filter_iter);
+
                 string start_state;
                 string s_name;
                 list_store.@get (iter, 0, out s_name, 1, out start_state, -1);
@@ -239,8 +267,11 @@ namespace Services {
 
         private void on_row_activated (Gtk.TreePath path, Gtk.TreeViewColumn column) {
             Gtk.TreeModel model;
-            Gtk.TreeIter iter;
-            if (tree_selection.get_selected (out model, out iter)) {
+            Gtk.TreeIter filter_iter;
+            if (tree_selection.get_selected (out model, out filter_iter)) {
+                Gtk.TreeIter iter;
+                list_filter.convert_iter_to_child_iter (out iter, filter_iter);
+
                 string s_name;
                 list_store.@get (iter, 0, out s_name, -1);
 

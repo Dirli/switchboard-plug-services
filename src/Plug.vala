@@ -38,6 +38,34 @@ namespace Services {
 
             var main_view = new Widgets.MainView ();
 
+            var clear_button = new Gtk.Button.from_icon_name ("edit-clear-symbolic-rtl", Gtk.IconSize.MENU);
+            clear_button.tooltip_text = _("Clear filter");
+            clear_button.sensitive = false;
+
+            var filter_box = new Widgets.FilterBox ();
+            filter_box.changed_filter.connect ((col, val) => {
+                clear_button.sensitive = val != "";
+                main_view.run_filter (col, val);
+            });
+
+            clear_button.clicked.connect (() => {
+                filter_box.clear_filter ();
+            });
+
+            var filter_popover = new Gtk.Popover (null);
+            filter_popover.add (filter_box);
+
+            var filter_button = new Gtk.MenuButton ();
+            filter_button.image = new Gtk.Image.from_icon_name ("view-filter-symbolic", Gtk.IconSize.MENU);
+            filter_button.popover = filter_popover;
+
+            var buttons_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
+            buttons_box.halign = Gtk.Align.END;
+            buttons_box.margin = 12;
+            buttons_box.margin_bottom = 0;
+            buttons_box.pack_end (filter_button);
+            buttons_box.pack_end (clear_button);
+
             var info_bar = new Gtk.InfoBar ();
             info_bar.message_type = Gtk.MessageType.INFO;
 
@@ -51,10 +79,10 @@ namespace Services {
             content.add (new Gtk.Label (_("You must have administrator rights to manage the services")));
 
             main_grid = new Gtk.Grid ();
-            main_grid.margin = 6;
 
             main_grid.attach (info_bar, 0, 0, 1, 1);
-            main_grid.attach (main_view, 0, 1, 1, 1);
+            main_grid.attach (buttons_box, 0, 1, 1, 1);
+            main_grid.attach (main_view, 0, 2, 1, 1);
 
             main_grid.show_all ();
 
