@@ -19,8 +19,12 @@
 namespace Services {
     public class Widgets.MainView : Gtk.Grid {
         private Gtk.ListStore list_store;
+        private Gtk.TreeModelFilter list_filter;
         private Gtk.TreeSelection tree_selection;
 
+        private Widgets.WaitingView waiting_box;
+
+        private Gtk.Stack stack;
         private Gtk.Switch service_switcher;
         private Gtk.Box bottom_box;
         private Gtk.Button run_button;
@@ -41,13 +45,19 @@ namespace Services {
             row_spacing = 12;
             margin = 12;
 
+            waiting_box = new Widgets.WaitingView ();
+            waiting_box.start_spinner (true);
+
             list_store = new Gtk.ListStore (4, typeof (string), typeof (string), typeof (string), typeof (string));
 
+            list_filter = new Gtk.TreeModelFilter (list_store, null);
+            list_filter.set_visible_func (row_visible);
+
             view = new Widgets.ServicesView ();
-            view.set_model (list_store);
             view.row_activated.connect (on_row_activated);
             tree_selection = view.get_selection ();
             tree_selection.changed.connect (selected_item_changed);
+
 
             var scrolled = new Gtk.ScrolledWindow (null, null);
             scrolled.add (view);
@@ -93,13 +103,22 @@ namespace Services {
             bottom_box.pack_start (btns_box, false);
             bottom_box.pack_end (switch_box, false);
 
+            stack = new Gtk.Stack ();
+            stack.add_named (scrolled, "mainview");
+            stack.add_named (waiting_box, "waiting");
+            stack.set_visible_child_name ("waiting");
+
             var frame = new Gtk.Frame (null);
-            frame.add (scrolled);
+            frame.add (stack);
 
             add (frame);
             add (bottom_box);
 
             load_services ();
+        }
+
+        private bool row_visible (Gtk.TreeModel model, Gtk.TreeIter iter) {
+            return true;
         }
 
         private void load_services () {
@@ -131,17 +150,26 @@ namespace Services {
                     service_active = service_active + " (" + service_sub + ")";
 
                     Gtk.TreeIter iter;
-                    list_store.insert_with_values (out iter, -1,
-                                                   0, service_name,
-                                                   1, service_state,
-                                                   2, service_active,
-                                                   3, service_description, -1);
+                    list_store.append (out iter);
+                    list_store.@set (iter,
+                                     0, service_name,
+                                     1, service_state,
+                                     2, service_active,
+                                     3, service_description, -1);
 
                     return true;
                 });
 
+                view.set_model (list_filter);
+
+                waiting_box.start_spinner (false);
+                stack.set_visible_child_name ("mainview");
                 return null;
             });
+        }
+
+        public void run_filter () {
+            list_filter.refilter ();
         }
 
         private void clicked_button (string command_name) {
@@ -162,8 +190,7 @@ namespace Services {
                 stop_button.sensitive = s_active == "active";
 
                 s_active = s_active + " (" + sub + ")";
-
-                (model as Gtk.ListStore).@set (iter, 2, s_active, -1);
+                list_store.@set (iter, 2, s_active, -1);
             }
         }
 
@@ -179,7 +206,7 @@ namespace Services {
             Gtk.TreeIter iter;
             if (tree_selection.get_selected (out model, out iter)) {
                 var service_state = Utils.get_service_property (active_service, "UnitFileState");
-                (model as Gtk.ListStore).@set (iter, 1, service_state, -1);
+                list_store.@set (iter, 1, service_state, -1);
             }
         }
 
@@ -193,7 +220,7 @@ namespace Services {
             if (tree_selection.get_selected (out model, out iter)) {
                 string start_state;
                 string s_name;
-                model.@get (iter, 0, out s_name, 1, out start_state, -1);
+                list_store.@get (iter, 0, out s_name, 1, out start_state, -1);
 
                 if (start_state != "static") {
                     service_switcher.active = start_state == "enabled";
@@ -215,7 +242,7 @@ namespace Services {
             Gtk.TreeIter iter;
             if (tree_selection.get_selected (out model, out iter)) {
                 string s_name;
-                model.@get (iter, 0, out s_name, -1);
+                list_store.@get (iter, 0, out s_name, -1);
 
                 var s_status = Utils.get_service_status (s_name);
 

@@ -71,7 +71,6 @@ namespace Services {
 
         private Gtk.TreeViewColumn create_column (string title, int cid ) {
             var column = new Gtk.TreeViewColumn ();
-            // column.set_data<int> (Constants.TYPE_DATA_KEY, 0);
             column.title = title;
             column.sort_column_id = cid;
             column.visible = true;
@@ -82,34 +81,30 @@ namespace Services {
         private void set_fixed_column_width (Gtk.Widget treeview, Gtk.TreeViewColumn column, Gtk.CellRendererText renderer, string test_string, int padding) {
             int max_width = 0;
 
-            // foreach (unowned string str in strings) {
-                renderer.text = test_string;
-                Gtk.Requisition natural_size;
-                renderer.get_preferred_size (treeview, null, out natural_size);
+            renderer.text = test_string;
+            Gtk.Requisition natural_size;
+            renderer.get_preferred_size (treeview, null, out natural_size);
 
-                if (natural_size.width > max_width) {
-                    max_width = natural_size.width;
-                }
-            // }
+            if (natural_size.width > max_width) {
+                max_width = natural_size.width;
+            }
 
             column.fixed_width = max_width + padding;
         }
 
         public inline void cell_data_func (Gtk.CellLayout layout, Gtk.CellRenderer cell, Gtk.TreeModel tree_model, Gtk.TreeIter iter) {
-            if ((tree_model as Gtk.ListStore).iter_is_valid (iter)) {
-                Gtk.TreeIter i = iter;
-                var tvc = layout as Gtk.TreeViewColumn;
-                GLib.return_if_fail (tvc != null);
+            Gtk.TreeIter i = iter;
+            var tvc = layout as Gtk.TreeViewColumn;
+            GLib.return_if_fail (tvc != null);
 
-                int column = tvc.sort_column_id;
-                if (column < 0) {
-                    return;
-                }
-
-                GLib.Value val;
-                tree_model.get_value (i, column, out val);
-                (cell as Gtk.CellRendererText).text = val.get_string ();
+            int column = tvc.sort_column_id;
+            if (column < 0) {
+                return;
             }
+
+            GLib.Value val;
+            tree_model.get_value (i, column, out val);
+            (cell as Gtk.CellRendererText).text = val.get_string ();
         }
     }
 }

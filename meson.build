@@ -21,7 +21,8 @@ plug_files = files (
     'src/Utils.vala',
     'src/Widgets/MainView.vala',
     'src/Widgets/ServiceStatus.vala',
-    'src/Widgets/ServicesView.vala'
+    'src/Widgets/ServicesView.vala',
+    'src/Widgets/WaitingView.vala'
 )
 
 shared_module (
