@@ -71,21 +71,21 @@ namespace Services {
             service_switcher.valign = Gtk.Align.CENTER;
             service_switcher.sensitive = false;
 
-            run_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            run_button = new Gtk.Button.from_icon_name ("media-playback-start-symbolic", Gtk.IconSize.MENU);
             run_button.tooltip_text = _("Run service");
             run_button.sensitive = false;
             run_button.clicked.connect (() => {
                 clicked_button ("start");
             });
 
-            restart_button = new Gtk.Button.from_icon_name ("system-reboot-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            restart_button = new Gtk.Button.from_icon_name ("system-reboot-symbolic", Gtk.IconSize.MENU);
             restart_button.tooltip_text = _("Restart service");
             restart_button.sensitive = false;
             restart_button.clicked.connect (() => {
                 clicked_button ("restart");
             });
 
-            stop_button = new Gtk.Button.from_icon_name ("media-playback-stop-symbolic", Gtk.IconSize.LARGE_TOOLBAR);
+            stop_button = new Gtk.Button.from_icon_name ("media-playback-stop-symbolic", Gtk.IconSize.MENU);
             stop_button.tooltip_text = _("Stop service");
             stop_button.sensitive = false;
             stop_button.clicked.connect (() => {

@@ -56,15 +56,26 @@ namespace Services {
             filter_popover.add (filter_box);
 
             var filter_button = new Gtk.MenuButton ();
+            filter_button.tooltip_text = _("Filters");
             filter_button.image = new Gtk.Image.from_icon_name ("view-filter-symbolic", Gtk.IconSize.MENU);
             filter_button.popover = filter_popover;
 
+            var help_box = new Widgets.HelpBox ();
+
+            var help_popover = new Gtk.Popover (null);
+            help_popover.add (help_box);
+
+            var help_button = new Gtk.MenuButton ();
+            help_button.image = new Gtk.Image.from_icon_name ("system-help-symbolic", Gtk.IconSize.MENU);
+            help_button.popover = help_popover;
+
             var buttons_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-            buttons_box.halign = Gtk.Align.END;
+            // buttons_box.hexpand = true;
             buttons_box.margin = 12;
             buttons_box.margin_bottom = 0;
-            buttons_box.pack_end (filter_button);
-            buttons_box.pack_end (clear_button);
+            buttons_box.pack_start (help_button, false);
+            buttons_box.pack_end (filter_button, false);
+            buttons_box.pack_end (clear_button, false);
 
             var info_bar = new Gtk.InfoBar ();
             info_bar.message_type = Gtk.MessageType.INFO;
