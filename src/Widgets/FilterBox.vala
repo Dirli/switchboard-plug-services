@@ -26,25 +26,25 @@ namespace Services {
                 changed_filter (0, search_entry.text);
             });
 
-            var start_combo = new Gtk.ComboBoxText ();
-            start_combo.halign = Gtk.Align.FILL;
-            start_combo.append ("", "");
-            start_combo.append ("enabled", _("enabled"));
-            start_combo.append ("enabled-runtime", _("enabled-runtime"));
-            start_combo.append ("linked", _("linked"));
-            start_combo.append ("linked-runtime", _("linked-runtime"));
-            start_combo.append ("masked", _("masked"));
-            start_combo.append ("masked-runtime", _("masked-runtime"));
-            start_combo.append ("static", _("static"));
-            start_combo.append ("indirect", _("indirect"));
-            start_combo.append ("disabled", _("disabled"));
-            start_combo.append ("generated", _("generated"));
-            start_combo.append ("transient", _("transient"));
-            start_combo.append ("bad", _("bad"));
+            var state_combo = new Gtk.ComboBoxText ();
+            state_combo.halign = Gtk.Align.FILL;
+            state_combo.append ("", "");
+            state_combo.append ("enabled", _("enabled"));
+            state_combo.append ("enabled-runtime", _("enabled-runtime"));
+            state_combo.append ("linked", _("linked"));
+            state_combo.append ("linked-runtime", _("linked-runtime"));
+            state_combo.append ("masked", _("masked"));
+            state_combo.append ("masked-runtime", _("masked-runtime"));
+            state_combo.append ("static", _("static"));
+            state_combo.append ("indirect", _("indirect"));
+            state_combo.append ("disabled", _("disabled"));
+            state_combo.append ("generated", _("generated"));
+            state_combo.append ("transient", _("transient"));
+            state_combo.append ("bad", _("bad"));
 
             stack = new Gtk.Stack ();
             stack.add_titled (search_entry, "service", _("Service"));
-            stack.add_titled (start_combo, "start", _("Start"));
+            stack.add_titled (state_combo, "state", _("State"));
 
             current_filter = "service";
 
@@ -58,8 +58,8 @@ namespace Services {
 
             show_all ();
 
-            start_combo.changed.connect (() => {
-                changed_filter (1, start_combo.get_active_id ());
+            state_combo.changed.connect (() => {
+                changed_filter (1, state_combo.get_active_id ());
             });
 
             GLib.Idle.add (() => {

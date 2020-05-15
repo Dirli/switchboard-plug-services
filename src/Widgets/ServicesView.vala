@@ -27,8 +27,8 @@ namespace Services {
             get_selection ().set_mode (Gtk.SelectionMode.SINGLE);
 
             add_column (create_column (_("Service"), 0));
-            add_column (create_column (_("Start"), 1), "enabled-runtime");
-            add_column (create_column (_("State"), 2), "active (running)");
+            add_column (create_column (_("State"), 1), "enabled-runtime");
+            add_column (create_column (_("Active"), 2), "active (running)");
             add_column (create_column (_("Description"), 3));
         }
 

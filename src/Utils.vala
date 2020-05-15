@@ -92,11 +92,11 @@ namespace Services.Utils {
             foreach (var s in services_arr) {
                 var s_arr = s.split (" ", 2);
                 if (s_arr.length > 1) {
+                    var full_name = s_arr[0];
                     var service_state = s_arr[1].strip ();
                     s_arr = service_state.split (" ", 2);
                     service_state = s_arr[0].strip ();
                     if (service_state != "masked") {
-                        var full_name = s_arr[0];
                         var service_name = full_name.slice (0, full_name.index_of (".service"));
                         if (!service_name.has_suffix ("@")) {
                             if (!services.has_key (service_name)) {
