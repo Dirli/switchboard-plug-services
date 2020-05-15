@@ -7,14 +7,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: services-plug\n"
-"POT-Creation-Date: 2020-03-23 23:56+0300\n"
+"POT-Creation-Date: 2020-05-15 21:00+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ../src\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
@@ -24,50 +24,221 @@ msgstr ""
 msgid "Authentication is required to manage services"
 msgstr ""
 
-#: src/Plug.vala:28
+#: Plug.vala:28
 msgid "Services"
 msgstr ""
 
-#: src/Plug.vala:29, data/io.elementary.switchboard.services.policy.in:10
+#: Plug.vala:29
 msgid "Manage services"
 msgstr ""
 
-#: src/Plug.vala:51
+#: Plug.vala:42
+msgid "Clear filter"
+msgstr ""
+
+#: Plug.vala:59
+msgid "Filters"
+msgstr ""
+
+#: Plug.vala:90
 msgid "You must have administrator rights to manage the services"
 msgstr ""
 
-#: src/Widgets/MainView.vala:56
-msgid "Enable/Disable service:"
+#: Widgets/FilterBox.vala:19
+msgid "Search Service"
 msgstr ""
 
-#: src/Widgets/MainView.vala:63
-msgid "Run service"
+#: Widgets/FilterBox.vala:32
+msgid "enabled"
 msgstr ""
 
-#: src/Widgets/MainView.vala:70
-msgid "Restart service"
+#: Widgets/FilterBox.vala:33
+msgid "enabled-runtime"
 msgstr ""
 
-#: src/Widgets/MainView.vala:77
-msgid "Stop service"
+#: Widgets/FilterBox.vala:34
+msgid "linked"
 msgstr ""
 
-#: src/Widgets/ServiceStatus.vala:48
-msgid "Close"
+#: Widgets/FilterBox.vala:35
+msgid "linked-runtime"
 msgstr ""
 
-#: src/Widgets/ServicesView.vala:29
+#: Widgets/FilterBox.vala:36
+msgid "masked"
+msgstr ""
+
+#: Widgets/FilterBox.vala:37
+msgid "masked-runtime"
+msgstr ""
+
+#: Widgets/FilterBox.vala:38
+msgid "static"
+msgstr ""
+
+#: Widgets/FilterBox.vala:39
+msgid "indirect"
+msgstr ""
+
+#: Widgets/FilterBox.vala:40
+msgid "disabled"
+msgstr ""
+
+#: Widgets/FilterBox.vala:41
+msgid "generated"
+msgstr ""
+
+#: Widgets/FilterBox.vala:42
+msgid "transient"
+msgstr ""
+
+#: Widgets/FilterBox.vala:43
+msgid "bad"
+msgstr ""
+
+#: Widgets/FilterBox.vala:46 Widgets/ServicesView.vala:29
 msgid "Service"
 msgstr ""
 
-#: src/Widgets/ServicesView.vala:30
-msgid "Start"
-msgstr ""
-
-#: src/Widgets/ServicesView.vala:31
+#: Widgets/FilterBox.vala:47 Widgets/HelpBox.vala:54
+#: Widgets/ServicesView.vala:30
 msgid "State"
 msgstr ""
 
-#: src/Widgets/ServicesView.vala:32
+#: Widgets/HelpBox.vala:17
+msgid ""
+"Enabled via .wants/, .requires/ or Alias= symlinks (permanently in /etc/"
+"systemd/system/, or transiently in /run/systemd/system/)."
+msgstr ""
+
+#: Widgets/HelpBox.vala:18
+msgid ""
+"Made available through one or more symlinks to the unit file "
+"(permanently in /etc/systemd/system/ or transiently in /run/systemd/"
+"system/), even though the unit file might reside outside of the unit "
+"file search path."
+msgstr ""
+
+#: Widgets/HelpBox.vala:19
+msgid ""
+"Completely disabled, so that any start operation on it fails "
+"(permanently in /etc/systemd/system/ or transiently in /run/systemd/"
+"systemd/)"
+msgstr ""
+
+#: Widgets/HelpBox.vala:20
+msgid ""
+"The unit file is not enabled, and has no provisions for enabling in the "
+"\"[Install]\" unit file section."
+msgstr ""
+
+#: Widgets/HelpBox.vala:21
+msgid ""
+"The unit file itself is not enabled, but it has a non-empty Also= "
+"setting in the \"[Install]\" unit file section, listing other unit files "
+"that might be enabled, or it has an alias under a different name through "
+"a symlink that is not specified in Also=. For template unit file, an "
+"instance different than the one specified in DefaultInstance= is enabled."
+msgstr ""
+
+#: Widgets/HelpBox.vala:22
+msgid ""
+"The unit file is not enabled, but contains an \"[Install]\" section with "
+"installation instructions."
+msgstr ""
+
+#: Widgets/HelpBox.vala:23
+msgid ""
+"The unit file was generated dynamically via a generator tool. See "
+"systemd.generator(7). Generated unit files may not be enabled, they are "
+"enabled implicitly by their generator."
+msgstr ""
+
+#: Widgets/HelpBox.vala:24
+msgid ""
+"The unit file has been created dynamically with the runtime API. "
+"Transient units may not be enabled."
+msgstr ""
+
+#: Widgets/HelpBox.vala:25
+msgid ""
+"The unit file is invalid or another error occurred. Note that is-enabled "
+"will not actually return this state, but print an error message instead. "
+"However the unit file listing printed by list-unit-files might show it."
+msgstr ""
+
+#: Widgets/HelpBox.vala:38
+msgid ""
+"Early bootup, before basic.target is reached or the maintenance state "
+"entered."
+msgstr ""
+
+#: Widgets/HelpBox.vala:39
+msgid ""
+"Late bootup, before the job queue becomes idle for the first time, or "
+"one of the rescue targets are reached."
+msgstr ""
+
+#: Widgets/HelpBox.vala:40
+msgid "The system is fully operational."
+msgstr ""
+
+#: Widgets/HelpBox.vala:41
+msgid "The system is operational but one or more units failed."
+msgstr ""
+
+#: Widgets/HelpBox.vala:42
+msgid "The rescue or emergency target is active."
+msgstr ""
+
+#: Widgets/HelpBox.vala:43
+msgid "The manager is shutting down."
+msgstr ""
+
+#: Widgets/HelpBox.vala:44
+msgid ""
+"The manager is not running. Specifically, this is the operational state "
+"if an incompatible program is running as system manager (PID 1)."
+msgstr ""
+
+#: Widgets/HelpBox.vala:45
+msgid ""
+"The operational state could not be determined, due to lack of resources "
+"or another error cause."
+msgstr ""
+
+#: Widgets/HelpBox.vala:55 Widgets/ServicesView.vala:31
+msgid "Active"
+msgstr ""
+
+#: Widgets/HelpBox.vala:64
+msgid "learn more"
+msgstr ""
+
+#: Widgets/MainView.vala:68
+msgid "Enable/Disable service:"
+msgstr ""
+
+#: Widgets/MainView.vala:75
+msgid "Run service"
+msgstr ""
+
+#: Widgets/MainView.vala:82
+msgid "Restart service"
+msgstr ""
+
+#: Widgets/MainView.vala:89
+msgid "Stop service"
+msgstr ""
+
+#: Widgets/ServiceStatus.vala:47
+msgid "Close"
+msgstr ""
+
+#: Widgets/ServicesView.vala:32
 msgid "Description"
+msgstr ""
+
+#: Widgets/WaitingView.vala:33
+msgid "Loading services..."
 msgstr ""
