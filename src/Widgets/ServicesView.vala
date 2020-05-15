@@ -102,9 +102,14 @@ namespace Services {
                 return;
             }
 
+            var cell_text = cell as Gtk.CellRendererText;
+            if (cell_text == null) {
+                return;
+            }
+
             GLib.Value val;
             tree_model.get_value (i, column, out val);
-            (cell as Gtk.CellRendererText).text = val.get_string ();
+            cell_text.text = val.get_string ();
         }
     }
 }
