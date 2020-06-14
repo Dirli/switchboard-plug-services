@@ -1,5 +1,11 @@
 # Switchboard Services Plug
 
+<p align="left">
+    <a href="https://paypal.me/Dirli85">
+        <img src="https://img.shields.io/badge/Donate-PayPal-green.svg">
+    </a>
+</p>
+
 ![screenshot](data/screenshot.png?raw=true)
 
 ## Building and Installation
