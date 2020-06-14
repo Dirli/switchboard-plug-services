@@ -69,39 +69,27 @@ namespace Services {
             help_button.image = new Gtk.Image.from_icon_name ("system-help-symbolic", Gtk.IconSize.MENU);
             help_button.popover = help_popover;
 
+            var unlock_image = new Gtk.Image.from_icon_name ("changes-allow-symbolic", Gtk.IconSize.MENU);
+
             var buttons_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
-            // buttons_box.hexpand = true;
             buttons_box.margin = 12;
             buttons_box.margin_bottom = 0;
             buttons_box.pack_start (help_button, false);
+            buttons_box.pack_start (unlock_image, false);
             buttons_box.pack_end (filter_button, false);
             buttons_box.pack_end (clear_button, false);
 
-            var info_bar = new Gtk.InfoBar ();
-            info_bar.message_type = Gtk.MessageType.INFO;
-
-            var permission = Utils.get_permission ();
-            var lock_button = new Gtk.LockButton (permission);
-
-            var area = info_bar.get_action_area () as Gtk.Container;
-            area.add (lock_button);
-
-            var content = info_bar.get_content_area ();
-            content.add (new Gtk.Label (_("You must have administrator rights to manage the services")));
-
             main_grid = new Gtk.Grid ();
-
-            main_grid.attach (info_bar, 0, 0, 1, 1);
-            main_grid.attach (buttons_box, 0, 1, 1, 1);
-            main_grid.attach (main_view, 0, 2, 1, 1);
+            main_grid.attach (buttons_box, 0, 0);
+            main_grid.attach (main_view, 0, 1);
 
             main_grid.show_all ();
 
+            var permission = Utils.get_permission ();
             permission.notify["allowed"].connect (() => {
-                info_bar.visible = !permission.allowed;
-                main_view.permission = permission.allowed;
+                unlock_image.visible = permission.allowed;
             });
-            main_view.permission = permission.allowed;
+            unlock_image.visible = permission.allowed;
 
             return main_grid;
         }

@@ -26,7 +26,6 @@ namespace Services {
 
         private Gtk.Stack stack;
         private Gtk.Switch service_switcher;
-        private Gtk.Box bottom_box;
         private Gtk.Button run_button;
         private Gtk.Button restart_button;
         private Gtk.Button stop_button;
@@ -35,13 +34,8 @@ namespace Services {
         private int filter_column;
         private string filter_value = "";
 
+        private bool actual_active;
         private string active_service = "";
-
-        public bool permission {
-            set {
-                bottom_box.visible = value;
-            }
-        }
 
         public MainView () {
             orientation = Gtk.Orientation.VERTICAL;
@@ -75,6 +69,14 @@ namespace Services {
             run_button.tooltip_text = _("Run service");
             run_button.sensitive = false;
             run_button.clicked.connect (() => {
+                var permission = Utils.get_permission ();
+                if (!permission.allowed) {
+                    try {
+                        permission.acquire ();
+                    } catch (Error e) {
+                        return;
+                    }
+                }
                 clicked_button ("start");
             });
 
@@ -82,6 +84,15 @@ namespace Services {
             restart_button.tooltip_text = _("Restart service");
             restart_button.sensitive = false;
             restart_button.clicked.connect (() => {
+                var permission = Utils.get_permission ();
+                if (!permission.allowed) {
+                    try {
+                        permission.acquire ();
+                    } catch (Error e) {
+                        return;
+                    }
+                }
+
                 clicked_button ("restart");
             });
 
@@ -89,19 +100,28 @@ namespace Services {
             stop_button.tooltip_text = _("Stop service");
             stop_button.sensitive = false;
             stop_button.clicked.connect (() => {
+                var permission = Utils.get_permission ();
+                if (!permission.allowed) {
+                    try {
+                        permission.acquire ();
+                    } catch (Error e) {
+                        return;
+                    }
+                }
+
                 clicked_button ("stop");
             });
 
             var btns_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
+            btns_box.add (stop_button);
             btns_box.add (run_button);
             btns_box.add (restart_button);
-            btns_box.add (stop_button);
 
             var switch_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
             switch_box.add (switcher_label);
             switch_box.add (service_switcher);
 
-            bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
+            var bottom_box = new Gtk.Box (Gtk.Orientation.HORIZONTAL, 12);
             bottom_box.pack_start (btns_box, false);
             bottom_box.pack_end (switch_box, false);
 
@@ -218,9 +238,21 @@ namespace Services {
         }
 
         private void change_start_state () {
-            if (active_service == "") {
+            if (actual_active == service_switcher.active || active_service == "") {
                 return;
             }
+
+            var permission = Utils.get_permission ();
+            if (!permission.allowed) {
+                try {
+                    permission.acquire ();
+                } catch (Error e) {
+                    service_switcher.active = actual_active;
+                    return;
+                }
+            }
+
+            actual_active = service_switcher.active;
 
             Utils.exec_command (service_switcher.active ? "enable" : "disable", active_service);
 
@@ -250,10 +282,11 @@ namespace Services {
                 string s_name;
                 list_store.@get (iter, 0, out s_name, 1, out start_state, -1);
 
-                if (start_state != "static") {
+                service_switcher.sensitive = start_state == "enabled" || start_state == "disabled";
+                if (service_switcher.sensitive) {
                     service_switcher.active = start_state == "enabled";
+                    actual_active = service_switcher.active;
                 }
-                service_switcher.sensitive = start_state != "static";
 
                 var active_state = Utils.get_service_property (s_name, "ActiveState");
                 run_button.sensitive = active_state != "active";
@@ -261,8 +294,9 @@ namespace Services {
                 stop_button.sensitive = active_state == "active";
 
                 active_service = s_name;
-                service_switcher.notify["active"].connect (change_start_state);
             }
+
+            service_switcher.notify["active"].connect (change_start_state);
         }
 
         private void on_row_activated (Gtk.TreePath path, Gtk.TreeViewColumn column) {
