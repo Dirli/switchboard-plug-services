@@ -1,0 +1,21 @@
+Source: switchboard-plug-services
+Section: x11
+Priority: optional
+Maintainer: dirli <litandrej85@gmail.com>
+Build-Depends: debhelper-compat (= 12),
+               libglib2.0-dev,
+               libgranite-dev,
+               libgtk-3-dev,
+               libgee-0.8-dev,
+               libswitchboard-2.0-dev,
+               libpolkit-gobject-1-dev,
+               meson,
+               valac (>= 0.22)
+Standards-Version: 4.5.0
+Homepage: https://github.com/Dirli/switchboard-plug-services
+
+Package: switchboard-plug-services
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Enhances: switchboard
+Description: Plugin for managing system services
