@@ -114,37 +114,43 @@ namespace Services.Utils {
 
             string[] services_arr1 = ls_stdout.split ("\n");
             foreach (var s in services_arr1) {
-                var s_arr = s.split (" ", 2);
-                if (s_arr.length > 1) {
-                    var full_name = s_arr[0];
-                    var service_name = full_name.slice (0, full_name.index_of (".service"));
+                var s_arr = s.strip ().split (" ", 2);
+                while (s_arr.length > 1 && !s_arr[0].get_char ().isalpha ()) {
+                    s_arr = s_arr[1].strip ().split (" ", 2);
+                }
 
-                    var service_str = s_arr[1].strip ();
+                if (s_arr.length < 2 || !s_arr[0].get_char ().isalpha ()) {
+                    continue;
+                }
+
+                var full_name = s_arr[0];
+                var service_name = full_name.slice (0, full_name.index_of (".service"));
+
+                var service_str = s_arr[1].strip ();
+                s_arr = service_str.split (" ", 2);
+                var service_load = s_arr[0];
+
+                if (service_load != "not-found") {
+                    service_str = s_arr[1].strip ();
                     s_arr = service_str.split (" ", 2);
-                    var service_load = s_arr[0];
+                    var service_active = s_arr[0];
 
-                    if (service_load != "not-found") {
-                        service_str = s_arr[1].strip ();
-                        s_arr = service_str.split (" ", 2);
-                        var service_active = s_arr[0];
-
-                        service_str = s_arr[1].strip ();
-                        s_arr = service_str.split (" ", 2);
-                        var service_sub = s_arr[0];
-                        var description = s_arr[1].strip ();
-                        if (services.has_key (service_name)) {
-                            var unit = services[service_name];
-                            unit.description = description;
-                            unit.active = service_active;
-                            unit.sub = service_sub;
-                        } else {
-                            Unit service = {};
-                            service.title = service_name;
-                            service.description = description;
-                            service.active = service_active;
-                            service.sub = service_sub;
-                            services[service_name] = service;
-                        }
+                    service_str = s_arr[1].strip ();
+                    s_arr = service_str.split (" ", 2);
+                    var service_sub = s_arr[0];
+                    var description = s_arr[1].strip ();
+                    if (services.has_key (service_name)) {
+                        var unit = services[service_name];
+                        unit.description = description;
+                        unit.active = service_active;
+                        unit.sub = service_sub;
+                    } else {
+                        Unit service = {};
+                        service.title = service_name;
+                        service.description = description;
+                        service.active = service_active;
+                        service.sub = service_sub;
+                        services[service_name] = service;
                     }
                 }
             }
