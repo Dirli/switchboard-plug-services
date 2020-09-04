@@ -169,6 +169,10 @@ namespace Services {
                         service_state = Utils.get_service_property (service_name, "UnitFileState");
                     }
 
+                    if (service_state == "masked") {
+                        return true;
+                    }
+
                     var service_description = service.description;
                     if (service_description == null) {
                         service_description = Utils.get_service_property (service_name, "Description");
