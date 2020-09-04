@@ -10,10 +10,7 @@
 #export DH_VERBOSE=1
 
 %:
-	dh $@ 
-
-override_dh_strip:
-	dh_strip --dbgsym-migration='switchboard-plug-services-dbg (<< 1.0.0)'
+	dh $@
 
 override_dh_missing:
 	dh_missing --fail-missing

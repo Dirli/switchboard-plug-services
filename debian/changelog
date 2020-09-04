@@ -1,3 +1,10 @@
+switchboard-plug-services (1.0.1-1) testing; urgency=medium
+
+  * Added additional verification of masked services
+  * Checks for the presence of a dot in the names
+
+ -- dirli <litandrej85@gmail.com>  Sat, 05 Sep 2020 01:25:20 +0300
+
 switchboard-plug-services (1.0.0-1) testing; urgency=medium
 
   * Initial release

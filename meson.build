@@ -1,15 +1,15 @@
 project (
     'services',
     'vala', 'c',
-    version: '1.0.0'
+    version: '1.0.1'
 )
 
-gettext_name = meson.project_name() + '-plug'
+gettext_name = meson.project_name () + '-plug'
 gnome = import ('gnome')
-i18n = import('i18n')
+i18n = import ('i18n')
 
-add_global_arguments(
-    '-DGETTEXT_PACKAGE="@0@"'.format(gettext_name),
+add_global_arguments (
+    '-DGETTEXT_PACKAGE="@0@"'.format (gettext_name),
     language:'c'
 )
 
@@ -39,7 +39,7 @@ shared_module (
         meson.get_compiler ('vala').find_library ('posix')
     ],
     install: true,
-    install_dir : join_paths (switchboard_dep.get_pkgconfig_variable('plugsdir'), 'system')
+    install_dir : join_paths (switchboard_dep.get_pkgconfig_variable ('plugsdir'), 'system')
 )
 
 subdir ('data')
