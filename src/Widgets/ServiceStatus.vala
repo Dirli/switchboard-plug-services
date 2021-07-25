@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Dirli <litandrej85@gmail.com>
+ * Copyright (c) 2020-2021 Dirli <litandrej85@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,19 +18,22 @@
 
 namespace Services {
     public class Widgets.ServiceStatus : Gtk.Dialog {
-        public ServiceStatus (Gtk.Window parent, string s_name, string status) {
-            Object (
-                border_width: 6,
-                deletable: false,
-                destroy_with_parent: true,
-                resizable: false,
-                title: s_name,
-                transient_for: parent,
-                width_request: 540,
-                window_position: Gtk.WindowPosition.CENTER_ON_PARENT
-            );
+        public string service_info { get; construct set;}
 
-            var status_label = new Gtk.Label (status);
+        public ServiceStatus (Gtk.Window parent, string s_name, string status) {
+            Object (border_width: 6,
+                    deletable: false,
+                    destroy_with_parent: true,
+                    resizable: false,
+                    service_info: status,
+                    title: s_name,
+                    transient_for: parent,
+                    width_request: 540,
+                    window_position: Gtk.WindowPosition.CENTER_ON_PARENT);
+        }
+
+        construct {
+            var status_label = new Gtk.Label (service_info);
             status_label.margin = 10;
 
             var scrolled = new Gtk.ScrolledWindow (null, null);
@@ -48,8 +51,6 @@ namespace Services {
             ((Gtk.Button) close_button).clicked.connect (() => {
                 destroy ();
             });
-
-            show_all ();
         }
     }
 }

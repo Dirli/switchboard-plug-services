@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Dirli <litandrej85@gmail.com>
+ * Copyright (c) 2020-2021 Dirli <litandrej85@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,9 @@ namespace Services {
                     margin: 12,
                     valign: Gtk.Align.CENTER,
                     halign: Gtk.Align.CENTER);
+        }
 
+        construct {
             search_entry = new Gtk.SearchEntry ();
             search_entry.valign = Gtk.Align.CENTER;
             search_entry.placeholder_text = _("Search Service");

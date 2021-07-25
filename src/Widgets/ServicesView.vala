@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Dirli <litandrej85@gmail.com>
+ * Copyright (c) 2020-2021 Dirli <litandrej85@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +35,8 @@ namespace Services {
         public void add_column (Gtk.TreeViewColumn column, string? test_string = null) {
             column.sizing = Gtk.TreeViewColumnSizing.FIXED;
 
-            Gtk.CellRenderer? renderer = null;
-
-            renderer = new Gtk.CellRendererText ();
+            var renderer = new Gtk.CellRendererText ();
             column.set_cell_data_func (renderer, cell_data_func);
-
 
             column.pack_start (renderer, true);
             insert_column (column, -1);
@@ -50,10 +47,10 @@ namespace Services {
             }
 
             column.reorderable = false;
-            column.clickable = true;
+            column.clickable = false;
+            column.sort_indicator = false;
             column.resizable = test_string == null;
             column.expand = test_string == null;
-            column.sort_indicator = false;
 
             var header_button = column.get_button ();
 
@@ -97,7 +94,7 @@ namespace Services {
             var tvc = layout as Gtk.TreeViewColumn;
             GLib.return_if_fail (tvc != null);
 
-            int column = tvc.sort_column_id;
+            int column = tvc.get_sort_column_id ();
             if (column < 0) {
                 return;
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Dirli <litandrej85@gmail.com>
+ * Copyright (c) 2020-2021 Dirli <litandrej85@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  */
 
 namespace Services {
-    public class Widgets.MainView : Gtk.Grid {
+    public class Widgets.MainView : Gtk.Box {
         private Gtk.ListStore list_store;
         private Gtk.TreeModelFilter list_filter;
         private Gtk.TreeSelection tree_selection;
@@ -38,10 +38,12 @@ namespace Services {
         private string active_service = "";
 
         public MainView () {
-            orientation = Gtk.Orientation.VERTICAL;
-            row_spacing = 12;
-            margin = 12;
+            Object (orientation: Gtk.Orientation.VERTICAL,
+                    spacing: 12,
+                    margin: 12);
+        }
 
+        construct {
             waiting_box = new Widgets.WaitingView ();
             waiting_box.start_spinner (true);
 
@@ -130,10 +132,7 @@ namespace Services {
             stack.add_named (waiting_box, "waiting");
             stack.set_visible_child_name ("waiting");
 
-            var frame = new Gtk.Frame (null);
-            frame.add (stack);
-
-            add (frame);
+            add (stack);
             add (bottom_box);
 
             load_services ();
@@ -315,7 +314,9 @@ namespace Services {
 
                 var s_status = Utils.get_service_status (s_name);
 
-                new Widgets.ServiceStatus ((Gtk.Window) get_toplevel (), s_name, s_status);
+                var service_dialog = new Widgets.ServiceStatus ((Gtk.Window) get_toplevel (), s_name, s_status);
+                service_dialog.show_all ();
+                service_dialog.run ();
             }
         }
     }
