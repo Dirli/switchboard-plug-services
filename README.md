@@ -1,4 +1,5 @@
 # Switchboard Services Plug
+Plugin for managing services
 
 <p align="left">
     <a href="https://paypal.me/Dirli85">
@@ -6,12 +7,13 @@
     </a>
 </p>
 
+---
+
 ![screenshot](data/screenshot.png?raw=true)
 
 ## Building and Installation
 
-You'll need the following dependencies:
-
+### You'll need the following dependencies:
 * libswitchboard-2.0-dev
 * libgranite-dev
 * libgtk-3-dev
@@ -20,12 +22,7 @@ You'll need the following dependencies:
 * meson
 * valac
 
-Run `meson` to configure the build environment and then `ninja` to build
-
+### How to build
     meson build --prefix=/usr
-    cd build
-    ninja
-
-To install, use `ninja install`
-
-    sudo ninja install
+    ninja -C build
+    sudo ninja install -C build
